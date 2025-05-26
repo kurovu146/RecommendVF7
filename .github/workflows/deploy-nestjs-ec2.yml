@@ -108,7 +108,7 @@ jobs:
             cd $APP_DIR
 
             echo "2. Removing old application files..."
-            sudo rm -rf $APP_DIR/*
+            sudo find $APP_DIR -mindepth 1 -path $APP_DIR/.env -prune -o -exec rm -rf {} \;
 
             echo "3. Extracting new application files from $ZIP_FILE to $APP_DIR..."
             sudo unzip -o $ZIP_FILE -d $APP_DIR
