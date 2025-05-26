@@ -101,7 +101,7 @@ jobs:
             # Tạo thư mục nếu chưa có và đặt quyền sở hữu cho user SSH
             sudo mkdir -p $APP_DIR
             sudo chown -R ${{ secrets.EC2_USERNAME }}:${{ secrets.EC2_USERNAME }} $APP_DIR # Quan trọng: chown cả thư mục APP_DIR
-            
+
             echo "1. Navigating to application directory: $APP_DIR"
             sudo mkdir -p $APP_DIR # Đảm bảo thư mục tồn tại
             cd $APP_DIR
@@ -125,6 +125,9 @@ jobs:
             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
             npm ci --omit=dev --prefix $APP_DIR
+
+            echo "5.5. Generating Prisma Client..."
+            npx prisma generate --schema=$APP_DIR/prisma/schema.prisma
 
             echo "6. Restarting application with PM2 (Name: $PM2_APP_NAME)..."
             NESTJS_ENTRY_POINT="$APP_DIR/dist/main.js"
