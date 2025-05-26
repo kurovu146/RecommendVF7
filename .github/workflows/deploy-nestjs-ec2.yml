@@ -97,6 +97,11 @@ jobs:
 
             echo "--- Starting deployment on EC2 ---"
 
+            echo "0. Ensuring SSH user owns the application directory..."
+            # Tạo thư mục nếu chưa có và đặt quyền sở hữu cho user SSH
+            sudo mkdir -p $APP_DIR
+            sudo chown -R ${{ secrets.EC2_USERNAME }}:${{ secrets.EC2_USERNAME }} $APP_DIR # Quan trọng: chown cả thư mục APP_DIR
+            
             echo "1. Navigating to application directory: $APP_DIR"
             sudo mkdir -p $APP_DIR # Đảm bảo thư mục tồn tại
             cd $APP_DIR
